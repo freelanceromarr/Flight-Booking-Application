@@ -1,15 +1,17 @@
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { removeBookFlight } from "../redux/booking/actions";
-const Listing=({lists, bookState, remove})=>{
-    console.log(bookState);
+const Listing=()=>{
+//redux hook
+const lists = useSelector(state=>state.value)
+const dispatch = useDispatch()
 // delete flights list 
 const deleteHandler = (id) =>{
-   const listdelete= bookState;
+   const listdelete= lists;
     const data = listdelete.filter((item)=>{
         return item.id !==id;
     })
 
-    remove(data)
+    dispatch(removeBookFlight(data))
 };
 
 
@@ -74,16 +76,5 @@ const deleteHandler = (id) =>{
     )
 }
 
-const mapStateToProps =(state) => {
-    return {
-        bookState: state.value
-    }
-}
 
-const mapDispatchToProps =(dispatch) => {
-    return {
-        remove: (value)=> dispatch(removeBookFlight(value))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Listing);
+export default Listing;

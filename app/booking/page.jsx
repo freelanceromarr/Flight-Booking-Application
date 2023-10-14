@@ -1,12 +1,14 @@
 'use client'
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import Listing from "../components/Listing";
 import { bookFlight } from "../redux/booking/actions";
 import { useState } from "react";
 
 
 const Booking =(props)=>{
-const { book, bookState} = props;
+
+const bookState = useSelector( (sate) =>{return sate.value})
+const dispatch = useDispatch()
 const [formData, setFormData] = useState({
     id: getRandomInt(10000000),
     from: "",
@@ -24,10 +26,10 @@ function getRandomInt(max) {
   const onSubmitForm= (event)=>{
         event.preventDefault();
         setFormData({...formData, id: getRandomInt(10000000)});
-        book(formData)
+        dispatch(bookFlight(formData))
     }
     // console.log();
-    console.log(bookState);
+
     return (
         <>
             <div className="mt-[160px] mx-4 md:mt-[160px] relative">
@@ -106,21 +108,12 @@ function getRandomInt(max) {
                     </form>
                 </div>
             </div>
-            <Listing lists={bookState}/>
+            <Listing key="1" lists={bookState}/>
 
         </>
     )
 }
 
-const mapStateToProps =(state) => {
-    return {
-        bookState: state.value
-    }
-}
-const mapDispatchToProps =(dispatch) => {
-    return {
-        book: (value)=> dispatch(bookFlight(value))
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Booking)
+
+export default Booking;
